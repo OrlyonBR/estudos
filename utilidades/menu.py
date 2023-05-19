@@ -1,8 +1,8 @@
 from utilidades.funçoes import *
-from os import system as sistema
-
+#from os import system as sistema
 
 def tela():
+    arq = str(input('Abrir arquivo (caminho/arquivo.db):')).strip()
     while True:
         res = str(input(f'{"-=" * 8}MENU{"-=" * 8}'
                         f'\n1 - CRIAR TABELA'
@@ -11,6 +11,7 @@ def tela():
                         f'\n4 - PESQUISAR NA TABELA'
                         f'\n5 - ATUALIZAR DADOS'
                         f'\n6 - APAGAR TABELA'
+                        f'\n7 - MUDAR ARQUIVO'
                         f'\n7 - SAIR'
                         f'\nOPÇÃO: '))
 
@@ -36,13 +37,13 @@ def tela():
 
             #print(dados) exibe como ficaram os dados
 
-            criar_tabela(f'''CREATE TABLE {nome_tab}({dados})''')
+            criar_tabela(f'''CREATE TABLE {nome_tab}({dados})''', arq)
 
         elif res == '2':
-            print(ver_dados('SELECT name FROM sqlite_master;'))
+            print(ver_dados('SELECT name FROM sqlite_master;', arq))
             res = str(input('Qual Tabela: ')).strip().upper()
             #nome tabelas
-            res2 = (ver_dados(f'PRAGMA table_info({res})'))
+            res2 = (ver_dados(f'PRAGMA table_info({res})', arq))
             dados = list()
             for dado in res2:
                 dados.append(dado[1])
@@ -62,20 +63,20 @@ def tela():
                 else:
                     teste = teste + f"{dado}, "
 
-            add_or_att_dados(f'INSERT INTO {res} ({teste}) VALUES ({valores})')
+            add_or_att_dados(f'INSERT INTO {res} ({teste}) VALUES ({valores})', arq)
 
         elif res == '3':
             try:
-                print(ver_dados('SELECT name FROM sqlite_master;'))
+                print(ver_dados('SELECT name FROM sqlite_master;', arq))
                 res = str(input('Qual Tabela: ')).upper()
                 #mostra o nome da tabela
-                res2 = (ver_dados(f'PRAGMA table_info({res})'))
+                res2 = (ver_dados(f'PRAGMA table_info({res})', arq))
 
                 for c in res2:
                    print(f'[{c[1]:^18}]', end='')
 
                 #mostra os dados da tabela
-                res = ver_dados(f'SELECT * FROM {res}')
+                res = ver_dados(f'SELECT * FROM {res}', arq)
                 print()
                 for c in res:
                     for cont in c:
@@ -87,16 +88,16 @@ def tela():
                 print(f'{"-=" * 5}>A tabela não tem dados<{"-=" * 5}')
 
         elif res == '4':
-            print(ver_dados('SELECT name FROM sqlite_master;'))
+            print(ver_dados('SELECT name FROM sqlite_master;', arq))
             res = str(input('Qual Tabela: ')).upper()
-            res2 = ver_dados(f'PRAGMA table_info({res})')
+            res2 = ver_dados(f'PRAGMA table_info({res})', arq)
             for c in res2:
                 print(f'[{c[1]:^18}]', end=' ')
 
             res3 = str(input('\nQual coluna: ')).strip().upper()
             res4 = str(input('Pesquisar: ')).strip()
             #print(f"SELECT * FROM {res} WHERE {res2} LIKE '{res3}%'")
-            res = ver_dados(f"SELECT * FROM {res} WHERE {res3} LIKE '%{res4}%'")
+            res = ver_dados(f"SELECT * FROM {res} WHERE {res3} LIKE '%{res4}%'", arq)
             for c in res2:
                 print(f'[{c[1]:^18}]', end='')
             print()
@@ -105,14 +106,14 @@ def tela():
                     print(f'[{cont:^18}]', end='')
                 print()
         elif res == '5':
-            print(ver_dados('SELECT name FROM sqlite_master;'))
+            print(ver_dados('SELECT name FROM sqlite_master;', arq))
             res = str(input('Qual Tabela: ')).strip().upper()
-            res2 = (ver_dados(f'PRAGMA table_info({res})'))
+            res2 = (ver_dados(f'PRAGMA table_info({res})', arq))
 
             for c in res2:
                 print(f'[{c[1]:^18}]', end='')
 
-            res3 = ver_dados(f'SELECT * FROM {res}')
+            res3 = ver_dados(f'SELECT * FROM {res}', arq)
             print()
             for c in res3:
                 for cont in c:
@@ -122,14 +123,15 @@ def tela():
             res4 = str(input('Atualizar: ')).strip()
             res5 = str(input('Para: ')).strip()
             res6 = str(input('Coluna: ')).strip().upper()
-            print(f"UPDATE {res} SET {res6} = '{res5}' WHERE {res6} = '{res4}'")
-            add_or_att_dados(f"UPDATE {res} SET {res6} = '{res5}' WHERE {res6} = '{res4}'")
+            #print(f"UPDATE {res} SET {res6} = '{res5}' WHERE {res6} = '{res4}'")
+            add_or_att_dados(f"UPDATE {res} SET {res6} = '{res5}' WHERE {res6} = '{res4}'", arq)
 
         elif res == '6':
             print('Ainda não foi feita')
 
         elif res == '7':
+            arq = str(input('Qual arquivo (caminho/arquivo.db):')).strip()
+
+        elif res == '8':
             print(f'{"-=" * 5}>PROGRAMA ENCERRADO<{"-=" * 5}')
             break
-
-tela()

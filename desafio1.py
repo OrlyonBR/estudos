@@ -1,6 +1,3 @@
-import os
-from utilidades.menu import conectar
+from utilidades.menu import tela
 
-caminho = 'dados\\clientes.db'
-conexao = conectar(caminho)
-conexao.close()
+tela()
