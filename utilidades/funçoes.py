@@ -28,10 +28,11 @@ def criar_tabela(dados, conexao):
 
 
 def ver_dados(dados, conexao):
-    res = executar(dados,conexao)
+    res = executar(dados, conexao)
     fet = res[1].fetchall()
     return fet
 
 
-def add_or_att_dados(dados, conexao):
-    executar(dados, conexao)
+def fechar_conexao(conexao):
+    res = executar('', conexao)
+    res[1].close()
